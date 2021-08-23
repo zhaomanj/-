@@ -1,0 +1,36 @@
+#include<stdio.h>
+
+#define N 10
+int a[N];
+
+/* 从大到小的冒泡排序 */
+void bubbleSort(int numbers[], int array_size)
+{
+  int i, j, temp;
+
+  for (i = (array_size - 1); i > 0; i--)
+    for (j = 1; j <= i; j++)
+      if (numbers[j-1] < numbers[j]) {
+        temp = numbers[j - 1];
+        numbers[j - 1] = numbers[j];
+        numbers[j] = temp;
+      }
+}
+
+int main(void)
+{
+    /*********Begin*********/
+    int i, j;
+
+    for(i = 0; i < N; i++)
+        scanf("%d", &a[i]);
+    
+    /* 冒泡排序 */
+    bubbleSort(a, N);
+
+    for(i = 0; i < N; i++)
+        printf("%d ", a[i]);
+    printf("\n");
+    /*********End**********/
+    return 0;
+}
