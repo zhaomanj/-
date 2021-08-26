@@ -1,0 +1,19 @@
+  1 #include<stdio.h>
+  2
+  3 int main(void)
+  4 {
+  5     int i, j, a[2][3], b[3][2];
+  6     printf("Input 6 integers:\n");
+  7     for (i = 0; i < 2; i++)
+  8         for (j = 0; j < 3; j++)
+  9             scanf("%d", &a[i][j]);
+ 10     for (i = 0; i < 3; i++)
+ 11         for(j = 0; j < 2; j++)
+ 12             b[i][j] = a[j][i];
+ 13     for (i = 0; i <3; i++) {
+ 14         for (j = 0; j < 2; j++)
+ 15             printf("%5d", b[i][j]);
+ 16         printf("\n");
+ 17     }
+ 18     return 0;
+ 19 }
