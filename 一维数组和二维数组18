@@ -1,0 +1,21 @@
+  1 #include<stdio.h>
+  2
+  3 int main(void)
+  4 {
+  5     int i, j ;
+  6     double score[3][5], min;
+  7     printf("Input 15 numbers: \n");
+  8     for (i = 0; i < 3; i++) {
+  9         for (j = 0; j < 5; j++)
+ 10             scanf("%lf", &score[i][j]);
+ 11     }
+ 12     for (j = 0; j < 5; j++) {
+ 13         min = score[0][j];
+ 14         for (i = 0; i < 3; i++)
+ 15             if ( score[i][j] < min) {
+ 16                 min = score[i][j];
+ 17             }
+ 18         printf(" min = %.1f\n", min);
+ 19     }
+ 20     return 0;
+ 21 }
