@@ -1,0 +1,19 @@
+  1 #include<stdio.h>
+  2
+  3 int main(void)
+  4 {
+  5     int i, j;
+  6     double score[3][5], max;
+  7     printf("Input 15 numbers: \n");
+  8     for (i = 0; i < 3; i++)
+  9         for (j = 0; j < 5; j++)
+ 10             scanf("%lf", &score[i][j]);
+ 11
+ 12     max = score[0][0];
+ 13     for (i = 0; i < 3; i++)
+ 14         for (j = 0; j < 5; j++)
+ 15             if ( score[i][j] > max)
+ 16                 max = score[i][j];
+ 17     printf("max = %.1f\n", max);
+ 18     return 0;
+ 19 }
