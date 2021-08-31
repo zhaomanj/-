@@ -1,0 +1,39 @@
+1 e#include<stdio. h>
+
+#include<stdlib. h>
+
+3 //输出乘法口诀表(函数版)4 eint MulForm 0
+
+int i=0,j=0;
+
+for(i=1;is10;i++)
+
+for(j=1;j<=i;j++)
+
+10
+
+printf(' %d*%d=%d ", i, j, i*j);
+
+13
+
+printf(" n );
+
+16
+
+17 gint main()
+
+19
+
+printf("n", MulForm():
+
+20
+
+system(" pause" ) ;
+
+21
+
+return 0;
+
+22
+
+ttp://bog.csdn.net/qq 45914985
