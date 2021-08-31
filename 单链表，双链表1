@@ -1,0 +1,16 @@
+ public static int binarySearch(int[]A,int value) {
+        int low = 0;
+        int len = A.length;
+        int high = len -1;
+​
+        while(low <= high) {
+            int mid = (low + high)>>1;
+            if(A[mid] == value)
+                return mid;
+            else if (A[mid] < value)
+                low = mid +1;
+            else
+                high = mid -1;
+        }
+        return -1;
+    }
