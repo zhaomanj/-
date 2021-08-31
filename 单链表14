@@ -1,0 +1,6 @@
+//初始化
+void init()
+{
+	head=-1;
+	tail=0;
+}
