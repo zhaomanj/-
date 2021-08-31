@@ -1,0 +1,29 @@
+/**
+     * 查找最后一个等于value得元素
+     *
+     * @param a
+     * @param value
+     * @return
+     */
+    public static int binarySearchLast(int[] a, int value) {
+        int low = 0;
+        int n = a.length;
+        int high = n - 1;
+        while (low <= high) {
+            int mid = low + ((high - low) >> 1);
+            if (a[mid] > value)
+                high = mid - 1;
+            else if (a[mid] < value)
+                low = mid + 1;
+            else {
+                //当a[mid]=value时,若mid=n-1,则mid肯定是第一个元素,或者a[mid+1]!=value,则mid后面的元素都是大于value的,
+                // 因为数组是有序的,所以mid就是最后一个等于value的值
+                if (mid == n - 1 || a[mid + 1] != value)
+                    return mid;
+                else
+                    low = mid + 1;
+            }
+        }
+        return -1;
+    }
+​
