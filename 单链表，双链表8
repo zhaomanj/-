@@ -1,0 +1,37 @@
+class Solution:
+    '''
+    为什么这个题目会对二分法修改呢？
+    因为这道题目没有一个很明确的比较目标，原有二分法一般目标明确。
+    但是这道题目并不好确定最小的哪个。
+    考虑只有一个元素的情况，并不知道该向哪里缩进
+    [312],[123]
+
+    修改之后，右侧不动，弹出为left=right时，保证了只有一个元素时结束。
+    '''
+    def findMin(self, nums: List[int]) -> int:
+        left = 0
+        right = len(nums)-1
+        while left<right:
+            mid = left+(right-left)//2
+            # 如果想改为[1,2]时指向2，可以采用mid = left+(right-left+1)//2
+            print(mid,left, right)
+            if nums[mid]>nums[right]:
+                left = mid + 1
+            elif nums[mid]<=nums[right]:
+            # !!!这一类的题目只能right保持不变，不能left不变，不然[1,2]回死循环
+                right = mid
+        # 返回条件left==right
+        return nums[left]
+
+# 寻找最大元素,此时mid和left进行比较
+    def findMax(self, nums: List[int]) -> int:
+        left = 0
+        right = len(nums)-1
+        while left<right:
+            mid = left+(right-left+1)//2
+            print(mid,left, right)
+            if nums[mid]<nums[left]:
+                right = mid - 1
+            elif nums[mid]>=nums[left]:
+                left = mid
+        return nums[left]
