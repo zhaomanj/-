@@ -1,0 +1,203 @@
+package main
+
+import (
+	"errors"
+	"fmt"
+)
+
+type Node struct {
+	id   int
+	name string
+	next *Node
+	prev *Node
+}
+
+type CircleLink struct {
+	head *Node
+	tail *Node
+}
+
+func (circleLink *CircleLink) orderInsert(node *Node) {
+	// 按Node.id从小到大的顺序，插入链表中
+	curNode := circleLink.head
+	if curNode.id == 0 {
+		// 第一次插入元素的空链表
+		circleLink.head = node
+		circleLink.tail = node
+	} else {
+		// 如果node.id比队首id小，则队首让位后移，要保证队首最小。因为取值比较的时候， 是取curNode.next节点与node进行比较，如果满足大小顺序，
+		// 则将node插入curNode和curNode.next之间
+		if curNode.id > node.id {
+			node.next = curNode
+			curNode.prev = node
+			circleLink.head = node
+		} else {
+			// 如果node.id不比队首id小，则往后取一位，用后一位与node比较，匹配则插入当前位与后一位中间
+			for {
+				if curNode.next == nil {
+					// 循环到最后一位都没有插入成功，说明node.id比现有链表中的所有node的id都大，则node成为新的队尾
+					curNode.next = node
+					node.prev = curNode
+					circleLink.tail = node
+					break
+				}
+				if curNode.next.id > node.id {
+					node.next = curNode.next
+					node.prev = curNode
+					curNode.next.prev = node
+					curNode.next = node
+					break
+				}
+				curNode = curNode.next
+			}
+		}
+	}
+}
+
+func (circleLink *CircleLink) pop(id int) (node *Node, err error) {
+	// 弹出链表中指定id的node.这次从链表尾部往首部循环
+	curNode := circleLink.tail
+	if curNode.id == id {
+		// 要取的是队尾
+		circleLink.tail = circleLink.tail.prev
+		return curNode, nil
+	}
+	flag := false // 是否查找到的标志
+	for {
+		if curNode.prev == nil {
+			// 已经从队尾达到队首,全部都没命中
+			break
+		}
+		if curNode.id == id {
+			flag = true
+			selectNode := curNode
+			if curNode == circleLink.head {
+				// 如果命中的节点正好是队首
+				if circleLink.head.next != nil {
+					// 如果队首后面还有节点，则第二个节点置为新的首节点，且第二个节点的prev指向置为nil，这样原head没有被引用，内存会释放出来
+					circleLink.head.next.prev = nil
+					circleLink.head = circleLink.head.next
+				} else {
+					// 如果队首之后没有节点了，那么直接首位都置空
+					circleLink.head = nil
+					circleLink.tail = nil
+				}
+			} else {
+				// 命中的节点在队中间,则取出命中的节点，并维护好其前后指向关系
+				curNode.prev.next = curNode.next
+				curNode.next.prev = curNode.prev
+			}
+			return selectNode, nil
+		}
+		curNode = curNode.prev
+	}
+	if !flag {
+		// 如果循环结束还没有查找到，输出信息
+		return nil, errors.New("node not found")
+	}
+	return
+}
+
+func (circleLink *CircleLink) getLength() (number int) {
+	curNode := circleLink.tail
+	if circleLink.tail.id == 0 || circleLink.tail == nil {
+		// 空链表
+		return
+	} else {
+		for {
+			number += 1
+			curNode = curNode.prev
+			if curNode == nil {
+				break
+			}
+		}
+	}
+	fmt.Println("current link length:", number)
+	return number
+}
+
+func (circleLink *CircleLink) list() {
+	if circleLink.tail == nil || circleLink.tail.id == 0 {
+		fmt.Println("link is empty")
+	} else {
+		curNode := circleLink.tail
+		var nodes []*Node
+		for {
+			if curNode == nil {
+				break
+			}
+			//fmt.Print("<==", *curNode)
+			// 从尾部到首部的循环，为了展示链接效果，将节点先加入一个slice中，稍后从slice的后面开始循环展示数据.此时slice是从尾部到首部排序的
+			nodes = append(nodes, curNode)
+			curNode = curNode.prev
+		}
+		for i := 0; i < len(nodes); i++ {
+			index := len(nodes) - i - 1 // 颠倒一下顺序，现在slice中的顺序和链表顺序恰好是相反的，为了打印的效果，让前面的节点先输出
+			fmt.Print("<==>", nodes[index])
+		}
+	}
+
+	fmt.Println()
+
+}
+
+func main() {
+	// 约定空链表的header初始id为0，后面加入的实例id必须大于0
+	var originalHead = Node{
+		id: 0,
+	}
+	var s = CircleLink{
+		head: &originalHead,
+	}
+	var node1 = Node{
+		id:   1,
+		name: "001",
+	}
+	var node2 = Node{
+		id:   2,
+		name: "002",
+	}
+	var node3 = Node{
+		id:   3,
+		name: "003",
+	}
+	var node4 = Node{
+		id:   4,
+		name: "004",
+	}
+	var node5 = Node{
+		id:   5,
+		name: "005",
+	}
+
+	s.orderInsert(&node4)
+	s.list()
+	s.orderInsert(&node2)
+	s.list()
+	s.orderInsert(&node3)
+	s.list()
+	s.orderInsert(&node5)
+	s.list()
+	s.orderInsert(&node1)
+	s.list()
+	s.getLength()
+	popNode, err := s.pop(3)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("pop node successfully:", *popNode)
+	s.list()
+
+	/*
+		output:
+			<==&{4 004 <nil> <nil>}
+			<==&{2 002 0xc0000761e0 <nil>}<==&{4 004 <nil> 0xc000076180}
+			<==&{2 002 0xc0000761b0 <nil>}<==&{3 003 0xc0000761e0 0xc000076180}<==&{4 004 <nil> 0xc0000761b0}
+			<==&{2 002 0xc0000761b0 <nil>}<==&{3 003 0xc0000761e0 0xc000076180}<==&{4 004 0xc000076210 0xc0000761b0}<==&{5 005 <nil> 0xc0000761e0}
+			<==&{1 001 0xc000076180 <nil>}<==&{2 002 0xc0000761b0 0xc000076150}<==&{3 003 0xc0000761e0 0xc000076180}<==&{4 004 0xc000076210 0xc0000761b0}<==&{5 005 <nil> 0xc0000761e0}
+			current link length: 5
+			pop node successfully: {3 003 0xc0000761e0 0xc000076180}
+			<==&{1 001 0xc000076180 <nil>}<==&{2 002 0xc0000761e0 0xc000076150}<==&{4 004 0xc000076210 0xc000076180}<==&{5 005 <nil> 0xc0000761e0}
+	*/
+}
+
