@@ -1,0 +1,2 @@
+	for(int i=head;i!=-1;i=ne[i])
+	cout<<e[i]<<' ';
