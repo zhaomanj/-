@@ -1,0 +1,114 @@
+package main
+
+import (
+	"fmt"
+	"math/rand"
+)
+
+/*
+约瑟夫问题，又叫丢手帕游戏，若干人围成一圈，从头开始，每次递进若干位随机数，然后出列一人，接着再从出列者的下一位开始继续循环，
+直到圈内只剩最后一人,游戏结束
+*/
+
+type Child struct {
+	Id   int
+	next *Child
+}
+
+type Ring struct {
+	Head *Child
+	Tail *Child
+}
+
+func (ring *Ring) list() {
+	curChild := ring.Head
+	for {
+		fmt.Printf("child %d ==>\t", curChild.Id)
+		if curChild.next == ring.Head {
+			break
+		}
+		curChild = curChild.next
+	}
+	fmt.Println()
+}
+
+func (ring *Ring) play() {
+	// 开始转圈,第一次是从头开始
+	startIndex := 1
+	n := 0
+	startChild := ring.Head
+	for {
+		if startChild.next == startChild {
+			fmt.Printf("游戏结束，圈圈中的最后一位child是%d号\n", startChild.Id)
+			break
+		}
+		n += 1
+		randInt := rand.Intn(10)
+		curChild := startChild
+		for i := 0; i < randInt-1; i++ {
+			// 在出列child的前一位停下，因为是链表关系，所以需要维护好出列child的前一位的指向关系
+			curChild = curChild.next
+		}
+		chooseChild := curChild.next
+		if chooseChild == ring.Head {
+			ring.Head = chooseChild.next
+		}
+		curChild.next = chooseChild.next // chooseChild的指针取消，chooseChild会被回收，出列
+		fmt.Printf("第%d轮,从第%d号开始,前进%d位,出列的是%d号child,game continue!\n", n, startIndex, randInt, chooseChild.Id)
+		startIndex = (randInt + startIndex + 1) % 20
+		startChild = chooseChild.next // 下一轮，从chooseChild.next节点开始
+	}
+
+}
+
+func ringInit(number int) (ring Ring) {
+	// 构建一个指定成员数量的环形链表
+	for i := 1; i <= number; i++ {
+		var child = Child{
+			Id: i,
+		}
+		fmt.Println(child)
+		if i == 1 {
+			// 插入第一个节点
+			ring.Head = &child
+			ring.Tail = &child
+			ring.Tail.next = ring.Head // 尾节点下一个指针指向首节点
+		} else {
+			// 后面的节点，陆续成为新的尾结点
+			child.next = ring.Head
+			ring.Tail.next = &child
+			ring.Tail = &child
+		}
+	}
+	return
+}
+
+func main() {
+	ring := ringInit(20)
+	fmt.Println(*ring.Head, *ring.Tail)
+	ring.list()
+	ring.play()
+}
+/*
+	output:
+		第1轮,从第1号开始,前进1位,出列的是2号child,game continue!
+		第2轮,从第3号开始,前进7位,出列的是10号child,game continue!
+		第3轮,从第11号开始,前进7位,出列的是18号child,game continue!
+		第4轮,从第19号开始,前进9位,出列的是9号child,game continue!
+		第5轮,从第9号开始,前进1位,出列的是12号child,game continue!
+		第6轮,从第11号开始,前进8位,出列的是3号child,game continue!
+		第7轮,从第0号开始,前进5位,出列的是11号child,game continue!
+		第8轮,从第6号开始,前进0位,出列的是14号child,game continue!
+		第9轮,从第7号开始,前进6位,出列的是4号child,game continue!
+		第10轮,从第14号开始,前进0位,出列的是6号child,game continue!
+		第11轮,从第15号开始,前进4位,出列的是16号child,game continue!
+		第12轮,从第0号开始,前进1位,出列的是19号child,game continue!
+		第13轮,从第2号开始,前进2位,出列的是5号child,game continue!
+		第14轮,从第5号开始,前进9位,出列的是13号child,game continue!
+		第15轮,从第15号开始,前进8位,出列的是20号child,game continue!
+		第16轮,从第4号开始,前进4位,出列的是17号child,game continue!
+		第17轮,从第9号开始,前进1位,出列的是7号child,game continue!
+		第18轮,从第11号开始,前进5位,出列的是1号child,game continue!
+		第19轮,从第17号开始,前进7位,出列的是15号child,game continue!
+		游戏结束，圈圈中的最后一位child是8号
+*/
