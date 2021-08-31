@@ -1,0 +1,37 @@
+#include <iostream> 
+using namespace std;
+
+const int N = 100010;
+// q是代表数组， tmp代表临时数组，归并排序中用来存放两个子数组插入的值
+int q[N], tmp[N];
+int n;
+
+void merge_sort(int q[], int l ,int r)
+{
+    if(l >= r) return ;   ///< 数组中没有元素或者是只有一个元素，直接返回
+
+    int mid = l + r >> 1;  ///< 确定分界点
+    merge_sort(q, l, mid), merge_sort(q, mid + 1 , r); ///< 直接递归，分支进行排序
+
+    // 这里的i是左边的值，j 是右边的值，写成固定的值就不能进行下一次递归了
+    int i= l, j = mid + 1, k = 0;
+    while(i <= mid && j<=r)   ///< 双指针进行数组的排序， 每次将较小的数组中的元素放入tmp数组中
+    {
+        if(q[i] <= q[j] ) tmp[k++] = q[i++];
+        else    tmp[k++] = q[j++];
+    }
+    while(i <= mid) tmp[k++] = q[i++];   ///< 扫尾工作， 如果一个数组已经完成元素进入tmp数组，另一个数组中还有元素，那么直接放入tmp数组中
+    while(j <= r) tmp[k++] = q[j++];
+
+    ///< 物归原主， 将tmp数组存放的两个排序数组的元素放到原数组中
+    for(int i=l, j=0; i<=r;j++,i++) q[i] = tmp[j];  ///< i数原数组中idx， j是tmp数组中的idx
+}
+
+int main()
+{
+    cin >> n;
+    for(int i=0; i<n; i++) cin >> q[i];
+    merge_sort(q, 0, n-1);
+    for(int i=0; i<n; i++) cout << q[i] << " ";
+    return 0;
+}
