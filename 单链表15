@@ -1,0 +1,16 @@
+//将x查到头节点
+void add_to_head(int x)
+{
+	e[tail]=x;
+	ne[tail]=head; 
+	head=tail;
+	tail++;
+}
+//将x插到k节点的后面
+void add(int k,int x)
+{
+	e[tail]=x;
+	ne[tail]=ne[k];
+	ne[k]=tail;
+	tail++;
+}
