@@ -1,0 +1,43 @@
+/********* 排序用到的结构  头文件sort_struct.h ************/
+#include <ctime>
+#include <cstdlib>
+#include <iostream>
+#define MAXSIZE 100000000 //要排序数组个数最大值
+ 
+ 
+class SqList{
+public:
+	int r[MAXSIZE+1];
+	int length;
+};
+ 
+/* 交换L中数组r下标为i和j的值 */
+void swap(SqList *L, int i, int j)
+{
+	int temp = L->r[i];
+	L->r[i] = L->r[j];
+	L->r[j] = temp;
+}
+ 
+/* 显示数组内容 */
+void showSqList(SqList *L)
+{
+	for(int i=1;i<=L->length;i++)
+		std::cout<<L->r[i]<<"  ";
+	std::cout<<std::endl;
+}
+ 
+/* 为数组随机产生一串数字 */
+double random(double start, double end)
+{
+    return start+(end-start)*rand()/(RAND_MAX + 1.0);
+}
+void RandomCreat(SqList *L,int len)
+{	
+	double random(double,double);
+    srand(unsigned(time(0)));
+	for(int i=1;i<=len;i++)
+	{
+		L->r[i] = int(random(0,10000));
+	}
+}
