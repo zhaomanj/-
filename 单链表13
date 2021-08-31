@@ -1,0 +1,4 @@
+int head;    //表示头节点的下标
+int e[N];    //表示节点i的值
+int ne[N];   //ne[i]表示节点i的next指针
+int tail;    //tail当前储存已经用到了哪个点
