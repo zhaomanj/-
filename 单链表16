@@ -1,0 +1,6 @@
+//将下标是k的点的后一个点删除 
+void remove(int k)
+{
+    if(k==-1) head=ne[head];    //删除头节点的操作
+	else ne[k]=ne[ne[k]]; 
+}
