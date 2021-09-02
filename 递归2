@@ -1,0 +1,17 @@
+#include <stdio.h>
+int factrial(int a)
+{   int product=1;
+    if (a==1)
+    {
+        return product;
+    }
+    else
+    {
+        product=a*factrial(a-1);
+    }
+}
+int main(int argc, char const *argv[])
+{
+    printf("%d\n",factrial(3));
+    return 0;
+}
