@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <stdlib.h>
+//自定义函数
+int rabbit(int month)
+{
+    //当为第一个月和第二个月时
+    if(month==1 || month==2)
+    {
+        return 1;
+    }
+    //递归函数
+    else
+    {
+        return rabbit(month-1)+rabbit(month-2);
+    }
+
+}
+//主函数
+int main(void)
+{
+    //声明接收用户输入的变量类型
+    int month;
+    printf("请输入当前是第几个月：\n");
+    scanf("%d",&month);
+    //rabbit(month)调用自定义函数
+    printf("当前兔子对数为：%d",rabbit(month));
+    //程序暂停
+    system("pause");
+    //程序正常退出
+    return 0;
+}
