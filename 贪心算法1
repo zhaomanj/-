@@ -1,0 +1,48 @@
+#include<iostream>
+#include<cstdio>
+#include<vector>
+#include<algorithm>
+using namespace std;
+ 
+int main(){
+    freopen("a.txt","r",stdin);//
+ 
+    int s, w, n;
+    cin >> s;
+    while (s--){
+        cin >> w >> n;
+ 
+        vector<int> weights(n);
+        for (int i = 0; i < n;i++){
+            cin >> weights[i];
+        }
+ 
+        sort(weights.begin(),weights.end());
+ 
+        int res = 0;
+ 
+        int i = 0, j = n - 1;
+        while (i<=j){//
+            //用i<j的循环终止条件不行；
+            //比方说，当满足第一个if条件导致j--,使i==j,但此时i表示的人还有分配船，所以遗漏了；
+            if (i==j){
+                res++;
+                break;
+            }
+            if (weights[i]+weights[j]>w){
+                res++;
+                j--;
+            }
+            else {
+                res++;
+                i++;
+                j--;
+            }
+        }
+ 
+        cout << res<<endl;
+    }
+ 
+ 
+    return 0;
+}
