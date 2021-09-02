@@ -1,0 +1,18 @@
+#include <stdio.h>
+int fun(int n)
+{
+	if(n==1)
+		return 1;
+	if(n==2)
+		return 2;
+	else
+	{
+		return fun(n-1)+fun(n-2);
+	}
+}
+int main(void)
+{
+	int (*p)(int)=fun;
+	printf("%d\n",p(10));
+	return 0;
+}
