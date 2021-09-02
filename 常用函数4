@@ -1,0 +1,37 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#include<stdio.h>
+#include<string.h>
+
+int main() {
+  
+  char user[18] = {"zhangsan"};
+  char pwd[8] = {"123456"};
+
+  char userStr[18], pwdStr[8];
+
+    printf("请输入用户名：\n");
+    gets_s(userStr, 18);
+
+    if (strcmp(user, userStr))
+    {
+      printf("您输入的用户名有误！\n");
+      return -1;
+    }
+    else
+    {
+      printf("请输入密码：\n");
+      gets_s(pwdStr, 8);
+
+      if (strcmp(pwd, pwdStr))
+      {
+        printf("您输入的密码有误！\n");
+        return -1;
+      }
+      else
+      {
+        printf("欢迎进入！\n");
+        return 0;
+      }
+    }
+}
