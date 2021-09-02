@@ -1,0 +1,23 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#include<stdio.h>
+#include<string.h>
+
+int main() {
+
+  int len = 0;
+  char user[18] = {"zhangsan"};
+  char pwd[8] = {"123456"};
+
+  len = strlen(user);
+  printf("用户名的实际长度为：%d\n", len);
+
+  len = strlen(pwd);
+  printf("密码的实际长度为：%d\n", len);
+
+  strcat(user, pwd);
+  len = strlen(user);
+  printf("用户名和密码的实际长度为：%d\n", len);
+
+  return 0;
+}
