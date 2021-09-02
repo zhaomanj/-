@@ -1,0 +1,16 @@
+#include<stdio.h>
+#include<string.h>
+
+int main() {
+
+  char str[18] = {"Hello World!"};
+  printf("原字符串为：%s\n", str);
+
+  strupr(str);
+  printf("原字符串转换成大写：%s\n", str);
+
+  strlwr(str);
+  printf("原字符串转换成小写：%s\n", str);
+
+  return 0;
+}
