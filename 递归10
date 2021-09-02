@@ -1,0 +1,25 @@
+#include<stdio.h>
+int main()
+{
+	int arr[10] = { 1,2,3,4,5,6,7,8,9,10 };
+	int input, low, high, mid;
+	low = 0;
+	high = 9;
+	mid = (low + high) / 2;
+	scanf("%d", &input);
+	while (input != arr[mid])
+	{
+		if (input < arr[mid])
+		{
+			high = mid;
+			mid = (low + high) / 2;
+		}
+		else
+		{
+			low = mid;
+			mid = (low + high) / 2;
+		}
+	}
+	printf("%d", mid);
+	return 0;
+}
