@@ -1,0 +1,46 @@
+public void greedy2(){		  
+			   int [] st = {1,5,0,5,3,3,6,8,8,2,12};
+			   int [] et = {4,9,6,7,8,5,10,12,11,13,14};			
+			   int num = getNumber2(st,et);
+			   System.out.println("活动数量："+num);		
+	}
+
+	public int getNumber2(int[] a , int[] b)  //优先选择结束时间早的
+	{
+		int num=0;
+		int tempa=0;
+		int tempb=0;
+		int endTime=0;
+		int j=0;
+		for(int i=1;i<b.length;i++)//如果顺序混乱，则调整为结束时间从小到大的顺序,直接插入排序
+		{
+			    tempb=b[i];
+				tempa=a[i];
+			for(j=i-1;j>=0&&tempb<b[j];j--)
+			{								
+					b[j+1]=b[j];
+					a[j+1]=a[j];
+					if(j==0)
+					{
+						j--;
+						break;
+					}
+			}
+			    b[j+1]=tempb;
+				a[j+1]=tempa;				
+		}
+		System.out.println(Arrays.toString(a));
+		System.out.println(Arrays.toString(b));		
+		num++;
+		endTime=b[0];
+		for(int k=1;k<b.length;k++)
+		{
+			if(a[k]>endTime)
+			{
+				num++;
+				endTime=b[k];				
+			}
+		}						
+		return num;								
+	   }	
+     }
