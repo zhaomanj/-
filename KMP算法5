@@ -1,0 +1,73 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+ 
+using namespace std;
+ 
+int nex[10005];
+int s[1000000];
+int p[10005];
+int m,n;
+ 
+void GetNextval()
+{
+    int pLen = m;
+    nex[0] = -1;
+    int k = -1;
+    int j = 0;
+    while (j < pLen - 1)
+    {
+        if (k == -1 || p[j] == p[k])
+        {
+            ++j;
+            ++k;
+            if (p[j] != p[k])
+                nex[j] = k;  
+            else
+                nex[j] = nex[k];
+        }
+        else
+        {
+            k = nex[k];
+        }
+    }
+}
+int KmpSearch()
+{
+    int i = 0;
+    int j = 0;
+    int sLen = n;
+    int pLen = m;
+    while (i < sLen && j < pLen)
+    {
+        if (j == -1 || s[i] == p[j])
+        {
+            i++;
+            j++;
+        }
+        else
+        {
+            j = nex[j];
+        }
+    }
+    if (j == pLen)
+        return i - j+1;
+    else
+        return -1;
+}
+int main()
+{
+    int t;
+    scanf("%d",&t);
+    while(t--)
+    {
+        scanf("%d%d",&n,&m);
+        for(int i = 0 ; i < n ; i ++)
+            scanf("%d",&s[i]);
+        for(int i = 0 ; i < m ; i ++)
+            scanf("%d",&p[i]);
+        GetNextval();
+        printf("%d\n",KmpSearch());
+    }
+    return 0;
+}
