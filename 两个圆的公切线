@@ -1,0 +1,21 @@
+def solve_func():
+    result = []
+    klist = linspace(-50, 50, 200)
+    blist = linspace(-100, 100, 500)
+    (solved_k, solved_b) = (-float('Inf'), -float('Inf'))
+    for k in klist:
+        for b in blist:
+            if k > solved_k:
+                (solved_k, solved_b) = fsolve(funcForSolve, [k,b])
+                try:
+                    delta_k = min([abs(solved_k - item[0]) \
+                        for item in result])                        
+                except(IndexError, ValueError):
+                    delta_k = 10 # for first solves
+                
+                if delta_k > PRECISION:
+                    result.append((solved_k, solved_b))
+                    break
+        if len(result) >= 4:
+            break
+    return result
