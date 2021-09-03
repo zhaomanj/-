@@ -1,0 +1,15 @@
+iArea=iArea+(vecPoly[iCycle].x*vecPoly[(iCycle+1) % iCount].y-vecPoly[(iCycle+1) % iCount].x*vecPoly[iCycle].y);
+int intAreaCalc(vector<myPoint> &vecPoly)
+{
+    int iCycle,iCount,iArea;
+    iCycle=0;
+    iArea=0;
+    iCount=vecPoly.size();
+
+    for(iCycle=0;iCycle<iCount;iCycle++)
+    {    
+        iArea=iArea+(vecPoly[iCycle].x*vecPoly[(iCycle+1) % iCount].y-vecPoly[(iCycle+1) % iCount].x*vecPoly[iCycle].y);
+    }
+    
+    return abs(0.5*iArea);
+}
