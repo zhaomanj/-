@@ -1,0 +1,88 @@
+#include <iostream>
+#include <algorithm>
+#define MAX 1000
+using namespace std;
+
+struct node {
+    int x, y;
+
+    node(int _x = 0, int _y = 0)
+    {
+        x = _x;
+        y = _y;
+    }
+
+    node operator -(node a)//向量减
+    {
+        return node(x - a.x, y - a.y);
+    }
+
+    int operator*(node a)//叉乘
+    {
+        return (x * a.y - y * a.x);
+    }
+
+    friend int getdis(node a, node b)//两点间距离的平方
+    {
+        return ((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
+    }
+
+    void show()
+    {
+        cout << "x:" << x << " y:" << y << endl;
+    }
+
+}p[MAX];
+
+int ans[MAX];
+int n;
+
+int cmp(node a, node b)//极角排序
+{
+    int t = (a - p[0]) * (b - p[0]);
+    if (t != 0)
+        return t > 0;
+    else
+        return getdis(a, p[0]) < getdis(b, p[0]);
+}
+
+void getans()
+{
+    int len = 0;
+    ans[len++] = 0;
+    for (int i = 1; i < n; i++)
+    {
+        while (len >= 2 && ((p[ans[len - 1]] - p[ans[len - 2]]) * (p[i] - p[ans[len - 2]]) <= 0)) len--;
+        ans[len++] = i;
+    }
+    for (int i = 0; i < len; i++)
+        p[ans[i]].show();
+    int s = 0;
+    for (int i = 1; i+1 < len; i++)
+    {
+        s += (p[ans[i]] - p[0]) * (p[ans[i + 1]] - p[0]);
+    }
+    cout << 1.0 * s / 2;
+}
+
+
+int main()
+{
+    cin >> n;
+    for (int i = 0; i < n; i++)
+        cin >> p[i].x >> p[i].y;
+    int m = 0;//最左下的点的下标
+    for (int i = 1; i < n; i++)
+    {
+        if (p[i].y < p[m].y)
+            m = i;
+        else if (p[i].y == p[m].y && p[i].x < p[m].x)
+            m = i;
+    }
+    node t = p[m];
+    p[m] = p[0];
+    p[0] = t;
+    sort(p, p + n, cmp);
+    getans();
+    return 0;
+}
